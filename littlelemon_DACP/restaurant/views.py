@@ -18,15 +18,6 @@ def home(request):
 def about(request):
     return render(request, 'about.html')
 
-def book(request):
-    form = BookingForm()
-    if request.method == 'POST':
-        form = BookingForm(request.POST)
-        if form.is_valid():
-            form.save()
-    context = {'form':form}
-    return render(request, 'book.html', context)
-
 # Add your code here to create new views
 def menu(request):
     menu_data = Menu.objects.all().order_by('name')
@@ -44,26 +35,3 @@ def display_menu_items(request, pk=None):
 
     return render(request, 'menu_item.html', {"menu_item":menu_item})
 
-#@api_view(['GET'])
-@csrf_exempt
-def bookings(request):
-    if(request.method == 'POST'):
-        data = json.load(request)
-        exist = Booking.objects.filter(reservation_date=data['reservation_date']).filter(reservation_slot=data['reservation_slot']).exists()
-
-        if(not exist):
-            booking = Booking(first_name=data['first_name'],
-                              reservation_date=data['reservation_date'],
-                              reservation_slot=data['reservation_slot'],
-                              guest_number=1)
-            booking.save()
-
-        return HttpResponse({"error":1}, content_type='application/json')
-
-    date = request.GET.get('date', datetime.today().date())
-
-    bookings = Booking.objects.filter(reservation_date=date)
-    booking_json = serializers.serialize('json', bookings)#{"bookings":bookings}
-
-    #return Response({"bookings":booking_json})
-    return HttpResponse(booking_json, content_type='application/json')#render(request, 'bookings.html', {"bookings":booking_json})#booking_json)

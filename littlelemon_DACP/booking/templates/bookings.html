@@ -9,7 +9,8 @@
     <div class="row">
       <!--Begin col-->
       <div class="column">
-        <pre id="bookings"></pre>
+        <pre id="bookings">
+	</pre>
 	
       </div>
       <!--End col-->
@@ -37,13 +38,8 @@
 <script>
 	const bookings = JSON.parse('{{ bookings|safe }}');
 	const pretty_json = JSON.stringify(bookings, null, 2);
-	var reservations = "";
 
-	for(let i = 0; i < bookings.length; i++) {
-		reservations += bookings.at(i).pk + bookings.at(i).fields.first_name + bookings.at(i).fields.last_name + "<br>";
-	}
-
-	document.getElementById("bookings").innerHTML = reservations;
+	document.getElementById("bookings").innerHTML = pretty_json;
 
 	console.log(bookings)
 </script>

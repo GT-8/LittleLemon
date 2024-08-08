@@ -11,30 +11,25 @@
     <div class="row">
       <!--Begin col-->
       <div class="column">
-        <form action="" method="post">
           {% csrf_token %}
-          {{form}}
           <form method="POST" id="form">
-            <!-- {% csrf_token %} -->
             <p>
               <label for="first_name">Name:</label>
-              <input type="text" placeholder="Your Name" maxlength="200" required="" id="first_name">
+              <input type="text" placeholder="Your Name" maxlength="200" id="first_name" required>
             </p>
             <p>
               <label for="reservation_date">Date:</label>
-	      <input required="" id="reservation_date">
+	      <input id="reservation_date" onchange="getBookings()" required>
             </p>
       
             <p>
               <label for="reservation_slot">Reservation time:</label>
-              <select id="reservation_slot">
+              <select id="reservation_slot" required>
                 <option value="0" disabled>Select time</option>
               </select>
             </p>
             <button type="button" id="button">Reserve</button>
           </form>
-          <input type="submit" id="button">
-        </form>
       </div>
       <!--End col-->
 
@@ -69,21 +64,24 @@
 
   const date = new Date()
 
-  //document.getElementById('reservation_date').type="date";
-  document.getElementById('reservation_date').value = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate().toString().padStart(2, "0");
+  document.getElementById('reservation_date').type = "date";
+  document.getElementById('reservation_date').valueAsDate = date;
+  //document.getElementById('reservation_date').addEventListener("change", getBookings());
 
   console.log(document.getElementById('reservation_date').value)
+
   getBookings()
 
 
   /*  Step 10: Part two */
-  document.getElementById('reservation_date').addEventListener('change', getBookings());
 
   function getBookings() {
     let reserved_slots = []
     const date = document.getElementById('reservation_date').value
 
-    fetch("{% url 'bookings' %}" + '?date=' + date)
+	  console.log("called")
+
+    fetch("{% url 'bookings' %}" + '?api=true&&date=' + date)
       .then(r => r.json())
       .then(data => {
         reserved_slots = []

@@ -62,7 +62,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         # The settings for templates updated for the Graded assessment
-        'DIRS': ['restaurant/templates' ],
+        'DIRS': ['restaurant/templates', 'booking/templates' ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -157,8 +157,8 @@ REST_FRAMEWORK = {
             "rest_framework.permissions.DjangoModelPermissions",
         ],
         'DEFAULT_THROTTLE_RATES': {
-            'anon': '6/minute',
-            'user': '90/minute',
+            'anon': '12/minute',
+            'user': '72/minute',
         }, 
         'DEFAULT_FILTER_BACKENDS': [
             'django_filters.rest_framework.DjangoFilterBackend',
